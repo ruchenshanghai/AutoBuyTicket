@@ -66,8 +66,8 @@ class huoche(object):
 
 			self.driver.reload()
 
-			count=0
-			if self.order!=0:
+			count = 0
+			if self.order != 0:
 				while self.driver.url==self.ticket_url:
 					self.driver.find_by_text(u"查询").click()
 					count += 1
@@ -85,14 +85,21 @@ class huoche(object):
 					count += 1
 					print u"循环点击查询... 第 %s 次" % count
 					# sleep(0.8)
-					try:
-						for i in self.driver.find_by_text(u"预订"):
-							i.click()
-							sleep(1)
-					except Exception as e:
-						print e
-						print u"还没开始预订 %s" %count
-						continue
+					hardSeatID = 'YZ_76000K10940A'
+					hardSleepID = 'YW_76000K10940A'
+					if (cmp(self.driver.find_by_id(hardSeatID).first.text, u"无") == 0 and
+							cmp(self.driver.find_by_id(hardSleepID).first.text, u"无")== 0):
+						print "不满足条件"
+					else :
+						print "ok"
+						try:
+							for i in self.driver.find_by_text(u"预订"):
+								i.click()
+								sleep(1)
+						except Exception as e:
+							print e
+							print u"还没开始预订 %s" % count
+							continue
 			print u"开始预订..."
 			# sleep(3)
 			# self.driver.reload()
@@ -103,15 +110,15 @@ class huoche(object):
 
 			print u"提交订单..."
 			sleep(1)
-			# self.driver.find_by_text(self.pz).click()
+			self.driver.find_by_text(self.pz).click()
 			# self.driver.find_by_id('').select(self.pz)
-			# # sleep(1)
-			# self.driver.find_by_text(self.xb).click()
-			# sleep(1)
+			sleep(1)
+			self.driver.find_by_text(self.xb).click()
+			sleep(1)
 			self.driver.find_by_id('submitOrder_id').click()
-			# print u"开始选座..."
-			# self.driver.find_by_id('1D').last.click()
-			# self.driver.find_by_id('1F').last.click()
+			print u"开始选座..."
+			self.driver.find_by_id('1D').last.click()
+			self.driver.find_by_id('1F').last.click()
 
 			sleep(1.5)
 			print u"确认选座..."
