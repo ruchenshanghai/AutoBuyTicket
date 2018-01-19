@@ -14,7 +14,7 @@ class huoche(object):
 	#用户名，密码
 	username = u""
 	passwd = u""
-	# cookies值得自己去找, 下面两个分别是上海, 太原南
+	# cookies值得自己去找, 下面两个分别是达州, 深圳东
 	starts = u"%u8FBE%u5DDE%2CRXW"
 	ends = u"%u6DF1%u5733%u4E1C%2CBJQ"
 	# 时间格式2018-01-19
@@ -89,7 +89,7 @@ class huoche(object):
 					hardSleepID = 'YW_76000K10940A'
 					if (cmp(self.driver.find_by_id(hardSeatID).first.text, u"无") == 0 and
 							cmp(self.driver.find_by_id(hardSleepID).first.text, u"无")== 0):
-						print "不满足条件"
+						print "不满足席位条件"
 					else :
 						print "ok"
 						try:
