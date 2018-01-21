@@ -15,18 +15,20 @@ class huoche(object):
     # 用户名，密码
     username = u""
     passwd = u""
-    # cookies值得自己去找, 下面两个分别是成都东, 深圳东
-    starts = u"%u6210%u90FD%u4E1C%2CICW"
-    ends = u"%u6DF1%u5733%u4E1C%2CBJQ"
+    # cookies值得自己去找, 下面两个分别是上海, 达州
+    starts = u"%u4E0A%u6D77%2CSHH"
+    ends = u"%u8FBE%u5DDE%2CRXW"
     # 时间格式2018-01-19
-    dtime = u"2018-02-19"
+    dtime = u"2018-01-23"
     # 车次，选择第几趟，0则从上之下依次点击
-    order = 0
+    order = 2
     ###乘客名
     users = [u"陈光芬", u"黄大安"]
     ##席位
     xb = u"硬座"
-    pz = u"成人票"
+    pz = u"学生票"
+    hardSeatID = 'YZ_55000K115241'
+    hardSleepID = 'YW_55000K115241'
 
     """网址"""
     ticket_url = "https://kyfw.12306.cn/otn/leftTicket/init"
@@ -64,22 +66,23 @@ class huoche(object):
             self.driver.cookies.add({"_jc_save_fromStation": self.starts})
             self.driver.cookies.add({"_jc_save_toStation": self.ends})
             self.driver.cookies.add({"_jc_save_fromDate": self.dtime})
+            self.driver.find_by_id(u"sf2").click()
 
             self.driver.reload()
 
             count = 0
             if self.order != 0:
+                self.driver.find_by_id(u"sf2").click()
                 while self.driver.url == self.ticket_url:
+                    # self.driver.find_by_id(u"sf2").click()
                     self.driver.find_by_text(u"查询").click()
                     count += 1
                     print u"循环点击查询... 第 %s 次" % count
                     # sleep(1)
 
-                    hardSeatID = 'YZ_76000K10940A'
-                    hardSleepID = 'YW_76000K10940A'
-                    if (cmp(self.driver.find_by_id(hardSeatID).first.text, u"无") == 0):
-                        # if (cmp(self.driver.find_by_id(hardSeatID).first.text, u"无") == 0 and
-                        # 		cmp(self.driver.find_by_id(hardSleepID).first.text, u"无")== 0):
+                    # if (cmp(self.driver.find_by_id(self.hardSeatID).first.text, u"无") == 0):
+                    if (cmp(self.driver.find_by_id(self.hardSeatID).first.text, u"无") == 0 and
+                            cmp(self.driver.find_by_id(self.hardSleepID).first.text, u"无") == 0):
                         print "不满足席位条件"
                     else:
                         print "OK"
@@ -91,15 +94,14 @@ class huoche(object):
                             continue
             else:
                 while self.driver.url == self.ticket_url:
+                    self.driver.find_by_id(u"sf2").click()
                     self.driver.find_by_text(u"查询").click()
                     count += 1
                     print u"循环点击查询... 第 %s 次" % count
                     # sleep(0.8)
-                    hardSeatID = 'YZ_76000K10940A'
-                    hardSleepID = 'YW_76000K10940A'
-                    if (cmp(self.driver.find_by_id(hardSeatID).first.text, u"无") == 0):
-                        # if (cmp(self.driver.find_by_id(hardSeatID).first.text, u"无") == 0 and
-                        # 		cmp(self.driver.find_by_id(hardSleepID).first.text, u"无")== 0):
+                    # if (cmp(self.driver.find_by_id(self.hardSeatID).first.text, u"无") == 0):
+                    if (cmp(self.driver.find_by_id(self.hardSeatID).first.text, u"无") == 0 and
+                            cmp(self.driver.find_by_id(self.hardSleepID).first.text, u"无") == 0):
                         print "不满足席位条件"
                     else:
                         print "ok"
@@ -118,13 +120,14 @@ class huoche(object):
             print u'开始选择用户...'
             for user in self.users:
                 self.driver.find_by_text(user).last.click()
+                self.driver.find_by_id(u"dialog_xsertcj_ok").click()
 
             print u"提交订单..."
-            sleep(1)
-            self.driver.find_by_text(self.pz).click()
+            # sleep(1)
+            # self.driver.find_by_text(self.pz).click()
             # self.driver.find_by_id('').select(self.pz)
             sleep(1)
-            # self.driver.find_by_text(self.xb).click()
+            self.driver.find_by_text(self.xb).click()
             # sleep(1)
             self.driver.find_by_id('submitOrder_id').click()
             # print u"开始选座..."
